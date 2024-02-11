@@ -1,3 +1,33 @@
+class WheelSound {
+    constructor() {
+        // Create an AudioContext instance
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create an OscillatorNode
+        this.oscillator = this.audioContext.createOscillator();
+        
+        // Set the type of oscillator
+        this.oscillator.type = 'sine'; // You can change this to 'square', 'sawtooth', or 'triangle'
+        
+        // Set the frequency of the oscillator
+        this.oscillator.frequency.setValueAtTime(440, this.audioContext.currentTime); // 440 Hz is the frequency of the A4 note
+        
+        // Connect the oscillator to the audio output
+        this.oscillator.connect(this.audioContext.destination);
+    }
+
+    play() {
+        // Start the oscillator to generate sound
+        this.oscillator.start();
+    }
+
+    stop() {
+        // Stop the oscillator to stop generating sound
+        this.oscillator.stop();
+    }
+}
+
+
 class LuckyWheelItem {
     constructor(label, color= '#' + Math.floor(Math.random()*16777215).toString(16), outlineColor='#000') {
         this.label = label;
@@ -17,6 +47,7 @@ class luckyWheel {
         this.centerY = this.canvas.height / 2;
         this.radius = Math.min(this.centerX, this.centerY) * 0.9;
         this.currentRotation = 0;
+        this.sound = new WheelSound();
     }
 
     addItem(label,  color= '#' + Math.floor(Math.random()*16777215).toString(16), outlineColor='#000') {
@@ -78,7 +109,7 @@ class luckyWheel {
         let spinAngleStart = Math.random() * 10 + 10;
         let spinTime = 0;
         let spinTimeTotal = Math.random() * 3 + 4 * 1000; // Random spin time between 4-7 seconds
-
+	this.sound.play();
         const rotateWheel = () => {
             spinTime += 30;
             if (spinTime >= spinTimeTotal) {
@@ -103,6 +134,7 @@ class luckyWheel {
           let result = this.items[index].label  
 					console.log("Result: " + result);
 						displayLastResult(result)
+		this.sound.stop();
             //this.currentRotation = 0; // Reset rotation
         };
 
