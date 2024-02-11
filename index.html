@@ -1,6 +1,10 @@
-<canvas id="wheelCanvas" width="500" height="500"></canvas>
-<input type="text" id="newItem" placeholder="Add item">
-<button onclick="addItem()">Add Item</button>
-<button onclick="spinWheel()">Spin</button>
-<div id="result"></div>
+<div style="position: relative; width: 500px; height: 500px;">
+    <canvas id="wheelCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0;"></canvas>
+    <canvas id="pointerCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0;"></canvas>
+    <input type="text" id="newItem" placeholder="Add item">
+    <button onclick="addItem()">Add Item</button>
+    <button onclick="spinWheel()">Spin</button>
+    <div id="result"></div>
+</div>
+
 <script src="main.js" defer> </script>
