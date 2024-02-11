@@ -118,10 +118,6 @@ const wheel_canvas = document.getElementById('wheelCanvas');
 const pointerCanvas = document.getElementById('pointerCanvas');
 const wheel = new luckyWheel(wheel_canvas, pointerCanvas);
 
-const wheel_canvas = document.getElementById('wheelCanvas');
-const pointerCanvas = document.getElementById('pointerCanvas');
-const wheel = new luckyWheel(wheel_canvas, pointerCanvas);
-
 // Call the drawWheel method of the luckyWheel instance
 wheel.drawWheel();
 // Call the drawPointer method of the luckyWheel instance
