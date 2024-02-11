@@ -1,13 +1,27 @@
+class WheelItem {
+    constructor(label, color, outlineColor) {
+        this.label = label;
+        this.color = color || '#' + Math.floor(Math.random()*16777215).toString(16); // Default or random color
+        this.outlineColor = outlineColor || '#000'; // Default outline color
+
+        //Maintenance
+        drawWheel(); //Redraw the wheel
+        document.getElementById('newItem').value = ''; // Reset input field
+    }
+}
+
 const wheel_canvas = document.getElementById('wheelCanvas');
 const wheelCtx = wheel_canvas.getContext('2d');
 const centerX = wheel_canvas.width / 2;
 const centerY = wheel_canvas.height / 2;
 const radius = Math.min(centerX, centerY) * 0.9;
+
 let items = [
-  { label: 'Item 1', color: '#B8D430', outlineColor: '#708238' },
-  { label: 'Item 2', color: '#3AB745', outlineColor: '#275D34' },
-  // Initialize with a couple of items
+    new WheelItem('Item 1', '#B8D430', '#708238'),
+    new WheelItem('Item 2', '#3AB745', '#275D34'),
+    // Add more WheelItem instances as needed
 ];
+
 let currentRotation = 0;
 
 function drawWheel() {
@@ -53,22 +67,10 @@ function drawPointer() {
     pointerCtx.fill();
 }
 
-/*function addItem(label) {
-    const color = '#' + Math.floor(Math.random()*16777215).toString(16); // Generates a random color
-    const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16); // Generates a random outline color
-    items.push({ label, color, outlineColor });
+function addItem(label) {
+    const newItem = new WheelItem(label);
+    items.push(newItem);
     drawWheel();
-    drawPointer(); // Ensure the pointer is redrawn over the updated wheel
-}*/
-
-function addItem() {
-    const newItemValue = document.getElementById('newItem').value.trim();
-    if (newItemValue) {
-        const color = '#' + Math.floor(Math.random()*16777215).toString(16);
-        items.push({ label: newItemValue, color: color });
-        drawWheel();
-        document.getElementById('newItem').value = ''; // Reset input field
-    }
 }
 
 function removeItem(label) {
