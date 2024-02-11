@@ -1,5 +1,5 @@
 class LuckyWheelItem {
-    constructor(label, color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
+    constructor(label, color= '#' + Math.floor(Math.random()*16777215).toString(16), outlineColor='#000') {
         this.label = label;
         this.color = color //|| '#' + Math.floor(Math.random()*16777215).toString(16); // Default or random color
         this.outlineColor = outlineColor //|| '#000'; // Default outline color
