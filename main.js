@@ -1,4 +1,4 @@
-class WheelItem {
+class LuckyWheelItem {
     constructor(label, color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
         this.label = label;
         this.color = color //|| '#' + Math.floor(Math.random()*16777215).toString(16); // Default or random color
@@ -6,7 +6,7 @@ class WheelItem {
     }
 }
 
-class Wheel {
+class luckyWheel {
     constructor(canvas, pointerCanvas) {
         this.items = [];
         this.canvas = canvas;
@@ -20,7 +20,7 @@ class Wheel {
     }
 
     addItem(label,  color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
-        const item = new WheelItem(label, color, outlineColor);
+        const item = new LuckyWheelItem(label, color, outlineColor);
         this.items.push(item);
         this.drawWheel();
         this.drawPointer(); // Ensure the pointer is redrawn over the updated wheel
@@ -116,7 +116,7 @@ class Wheel {
 
 const wheel_canvas = document.getElementById('wheelCanvas');
 const pointerCanvas = document.getElementById('pointerCanvas');
-const wheel = new Wheel(wheel_canvas, pointerCanvas);
+const wheel = new luckyWheel(wheel_canvas, pointerCanvas);
 
 drawWheel();
 drawPointer(); // Initial draw of the pointer
