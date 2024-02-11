@@ -71,5 +71,46 @@ document.getElementById('addItem').addEventListener('click', function() {
     }
 });
 
+function spinWheel() {
+    let spinAngleStart = Math.random() * 10 + 10;
+    let spinTime = 0;
+    let spinTimeTotal = Math.random() * 3 + 4 * 1000; // Random spin time between 4-7 seconds
+
+    function rotateWheel() {
+        spinTime += 30;
+        if (spinTime >= spinTimeTotal) {
+            stopRotateWheel();
+            return;
+        }
+        let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+        currentRotation += (spinAngle * Math.PI / 180);
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(currentRotation);
+        ctx.translate(-centerX, -centerY);
+        drawWheel();
+        ctx.restore();
+        animationRequestId = requestAnimationFrame(rotateWheel);
+    }
+
+    function stopRotateWheel() {
+        cancelAnimationFrame(animationRequestId);
+        let degrees = currentRotation * 180 / Math.PI + 90;
+        let arcd = 360 / items.length;
+        let index = Math.floor((360 - degrees % 360) / arcd);
+        document.getElementById('result').innerHTML = "Result: " + items[index].label;
+        currentRotation = 0; // Reset rotation
+    }
+
+    function easeOut(t, b, c, d) {
+        const ts = (t /= d) * t;
+        const tc = ts * t;
+        return b + c * (tc + -3 * ts + 3 * t);
+    }
+
+    rotateWheel();
+}
+
+
 drawWheel();
 drawPointer(); // Initial draw of the pointer
