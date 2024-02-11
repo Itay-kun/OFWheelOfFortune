@@ -132,6 +132,20 @@ document.getElementById('spinButton').addEventListener('click', function() {
     wheel.spinWheel();
 });
 
+document.getElementById('addItemButton').addEventListener('click', function() {
+    const newItemValue = document.getElementById('newItem').value.trim();
+    if (newItemValue) {
+        const color = '#' + Math.floor(Math.random()*16777215).toString(16);
+        const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        wheel.addItem(newItemValue, color, outlineColor);
+        document.getElementById('newItem').value = ''; // Reset input field here
+    }
+});
+
+document.getElementById('spinButton').addEventListener('click', function() {
+    wheel.spinWheel();
+});
+
 
 drawWheel();
 drawPointer(); // Initial draw of the pointer
