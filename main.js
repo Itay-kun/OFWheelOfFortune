@@ -30,47 +30,80 @@ let items = [
 
 let currentRotation = 0;
 
-function drawWheel() {
-    wheelCtx.clearRect(0, 0, wheel_canvas.width, wheel_canvas.height); // Clear the canvas first
+class Wheel {
+    constructor(canvas, pointerCanvas) {
+        this.items = [];
+        this.canvas = canvas;
+        this.pointerCanvas = pointerCanvas;
+        this.wheelCtx = this.canvas.getContext('2d');
+        this.pointerCtx = this.pointerCanvas.getContext('2d');
+        this.centerX = this.canvas.width / 2;
+        this.centerY = this.canvas.height / 2;
+        this.radius = Math.min(this.centerX, this.centerY) * 0.9;
+        this.currentRotation = 0;
+    }
 
-    let totalItems = items.length;
+    addItem(label, color, outlineColor) {
+        const item = new WheelItem(label, color, outlineColor);
+        this.items.push(item);
+        this.drawWheel();
+        this.drawPointer(); // Ensure the pointer is redrawn over the updated wheel
+    }
+
+    removeItem(label) {
+        this.items = this.items.filter(item => item.label !== label);
+        this.drawWheel();
+        this.drawPointer(); // Redraw the pointer after the wheel update
+    }
+
+    drawWheel() {
+        // Implementation similar to your existing drawWheel function
+        // Use this.wheelCtx, this.items, and other instance properties
+     this.wheelCtx.clearRect(0, 0, wheel_canvas.width, wheel_canvas.height); // Clear the canvas first
+
+    let totalItems = this.items.length;
     let anglePerItem = Math.PI * 2 / totalItems;
-    wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height); // Clear the wheel canvas
+    this.wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height); // Clear the wheel canvas
 
     items.forEach((item, index) => {
         let angle = anglePerItem * index;
 
-        wheelCtx.beginPath();
-        wheelCtx.moveTo(centerX, centerY);
-        wheelCtx.arc(centerX, centerY, radius, angle, angle + anglePerItem);
-        wheelCtx.lineTo(centerX, centerY);
-        wheelCtx.fillStyle = item.color;
-        wheelCtx.fill();
-        wheelCtx.strokeStyle = item.outlineColor ? item.outlineColor : '#000'; // Use provided outline or default to black
-        wheelCtx.stroke();
+        this.wheelCtx.beginPath();
+        this.wheelCtx.moveTo(this.centerX, centerY);
+        this.wheelCtx.arc(this.centerX, this.centerY, this.radius, this.angle, this.angle + this.anglePerItem);
+        this.wheelCtx.lineTo(this.centerX, this.centerY);
+        this.wheelCtx.fillStyle = item.color;
+        this.wheelCtx.fill();
+        this.wheelCtx.strokeStyle = item.outlineColor ? item.outlineColor : '#000'; // Use provided outline or default to black
+        this.wheelCtx.stroke();
 
       //Draw Text
-        wheelCtx.save();
-        wheelCtx.translate(centerX, centerY);
-        wheelCtx.rotate(angle + anglePerItem / 2);
-        wheelCtx.textAlign = 'right';
-        wheelCtx.fillStyle = '#ffffff';
-        wheelCtx.font = '16px Arial';
-        wheelCtx.fillText(item.label, radius - 10, 10);
-        wheelCtx.restore();
+        this.wheelCtx.save();
+        this.wheelCtx.translate(this.centerX, this.centerY);
+        this.wheelCtx.rotate(this.angle + this.anglePerItem / 2);
+        this.wheelCtx.textAlign = 'right';
+        this.wheelCtx.fillStyle = '#ffffff';
+        this.wheelCtx.font = '16px Arial';
+        this.wheelCtx.fillText(item.label, radius - 10, 10);
+        this.wheelCtx.restore();
     });
   drawPointer();
-}
+    }
 
-function drawPointer() {
-    pointerCtx.clearRect(0, 0, pointerCanvas.width, pointerCanvas.height); // Clear the pointer canvas
-    pointerCtx.fillStyle = 'red';
-    pointerCtx.beginPath();
-    pointerCtx.moveTo(centerX, centerY - radius - 20);
-    pointerCtx.lineTo(centerX + 20, centerY - radius + 5);
-    pointerCtx.lineTo(centerX - 20, centerY - radius + 5);
-    pointerCtx.closePath();
-    pointerCtx.fill();
+    drawPointer() {
+        // Implementation similar to your existing drawPointer function
+        // Use this.pointerCtx and other instance properties
+        this.pointerCtx.clearRect(0, 0, pointerCanvas.width, pointerCanvas.height); // Clear the pointer canvas
+        this.pointerCtx.fillStyle = 'red';
+        this.pointerCtx.beginPath();
+        this.pointerCtx.moveTo(this.centerX, this.centerY - this.radius - 20);
+        this.pointerCtx.lineTo(this.centerX + 20, this.centerY - this.radius + 5);
+        this.pointerCtx.lineTo(this.centerX - 20, this.centerY - this.radius + 5);
+        this.pointerCtx.closePath();
+        this.pointerCtx.fill();
+    }
+
+    // Additional methods for spinning the wheel, etc.
 }
 
 function addItem(label) {
