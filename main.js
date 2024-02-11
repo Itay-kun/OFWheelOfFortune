@@ -100,8 +100,10 @@ class luckyWheel {
             let degrees = this.currentRotation * 180 / Math.PI + 90;
             let arcd = 360 / this.items.length;
             let index = Math.floor((360 - degrees % 360) / arcd);
-            console.log("Result: " + this.items[index].label);
-            this.currentRotation = 0; // Reset rotation
+          let result = this.items[index].label  
+					console.log("Result: " + result);
+						displayLastResult(result)
+            //this.currentRotation = 0; // Reset rotation
         };
 
         rotateWheel();
@@ -133,6 +135,10 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         const color = '#' + Math.floor(Math.random()*16777215).toString(16);
         const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16);
         wheel.addItem(newItemValue, color, outlineColor);
-        document.getElementById('newItem').value = ''; // Reset input field here
+        //document.getElementById('newItem').value = ''; // Reset input field here
     }
 });
+
+function displayLastResult(result) {
+    document.getElementById('resultBox').textContent = "Last Result: " + result;
+}
