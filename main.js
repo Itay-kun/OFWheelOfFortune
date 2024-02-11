@@ -109,7 +109,7 @@ class luckyWheel {
         let spinAngleStart = Math.random() * 10 + 10;
         let spinTime = 0;
         let spinTimeTotal = Math.random() * 3 + 4 * 1000; // Random spin time between 4-7 seconds
-	this.sound.play();
+	//this.sound.play();
         const rotateWheel = () => {
             spinTime += 30;
             if (spinTime >= spinTimeTotal) {
@@ -134,7 +134,7 @@ class luckyWheel {
           let result = this.items[index].label  
 					console.log("Result: " + result);
 						displayLastResult(result)
-		this.sound.stop();
+		//this.sound.stop();
             //this.currentRotation = 0; // Reset rotation
         };
 
