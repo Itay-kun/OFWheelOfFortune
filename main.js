@@ -5,13 +5,19 @@ class WheelItem {
         this.outlineColor = outlineColor || '#000'; // Default outline color
 
         //Maintenance
+        /*
         drawWheel(); //Redraw the wheel
         document.getElementById('newItem').value = ''; // Reset input field
+        */
     }
 }
 
 const wheel_canvas = document.getElementById('wheelCanvas');
 const wheelCtx = wheel_canvas.getContext('2d');
+
+const pointerCanvas = document.getElementById('pointerCanvas');
+const pointerCtx = pointerCanvas.getContext('2d');
+
 const centerX = wheel_canvas.width / 2;
 const centerY = wheel_canvas.height / 2;
 const radius = Math.min(centerX, centerY) * 0.9;
@@ -68,9 +74,12 @@ function drawPointer() {
 }
 
 function addItem(label) {
-    const newItem = new WheelItem(label);
-    items.push(newItem);
+    const color = '#' + Math.floor(Math.random()*16777215).toString(16);
+    const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+    items.push(new WheelItem(label, color, outlineColor));
     drawWheel();
+    drawPointer(); // Make sure to redraw the pointer as well
+    document.getElementById('newItem').value = ''; // Reset input field here
 }
 
 function removeItem(label) {
@@ -80,10 +89,9 @@ function removeItem(label) {
 }
 
 document.getElementById('addItem').addEventListener('click', function() {
-    const newItem = document.getElementById('newItem').value;
-    if (newItem) {
-        addItem(newItem);
-        document.getElementById('newItem').value = ''; // Clear input field after adding
+    const newItemValue = document.getElementById('newItem').value.trim();
+    if (newItemValue) {
+        addItem(newItemValue);
     }
 });
 
