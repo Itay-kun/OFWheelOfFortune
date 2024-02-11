@@ -15,46 +15,60 @@ function drawWheel() {
 
     let totalItems = items.length;
     let anglePerItem = Math.PI * 2 / totalItems;
+    wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height); // Clear the wheel canvas
 
     items.forEach((item, index) => {
         let angle = anglePerItem * index;
 
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, angle, angle + anglePerItem);
-        ctx.lineTo(centerX, centerY);
-        ctx.fillStyle = item.color;
-        ctx.fill();
-        ctx.strokeStyle = item.outlineColor ? item.outlineColor : '#000'; // Use provided outline or default to black
-        ctx.stroke();
+        wheelCtx.beginPath();
+        wheelCtx.moveTo(centerX, centerY);
+        wheelCtx.arc(centerX, centerY, radius, angle, angle + anglePerItem);
+        wheelCtx.lineTo(centerX, centerY);
+        wheelCtx.fillStyle = item.color;
+        wheelCtx.fill();
+        wheelCtx.strokeStyle = item.outlineColor ? item.outlineColor : '#000'; // Use provided outline or default to black
+        wheelCtx.stroke();
 
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(angle + anglePerItem / 2);
-        ctx.textAlign = 'right';
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '16px Arial';
-        ctx.fillText(item.label, radius - 10, 10);
-        ctx.restore();
+      //Draw Text
+        wheelCtx.save();
+        wheelCtx.translate(centerX, centerY);
+        wheelCtx.rotate(angle + anglePerItem / 2);
+        wheelCtx.textAlign = 'right';
+        wheelCtx.fillStyle = '#ffffff';
+        wheelCtx.font = '16px Arial';
+        wheelCtx.fillText(item.label, radius - 10, 10);
+        wheelCtx.restore();
     });
+  drawPointer();
 }
 
 function drawPointer() {
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY - radius - 20);
-    ctx.lineTo(centerX + 20, centerY - radius + 5);
-    ctx.lineTo(centerX - 20, centerY - radius + 5);
-    ctx.closePath();
-    ctx.fill();
+    pointerCtx.clearRect(0, 0, pointerCanvas.width, pointerCanvas.height); // Clear the pointer canvas
+    pointerCtx.fillStyle = 'red';
+    pointerCtx.beginPath();
+    pointerCtx.moveTo(centerX, centerY - radius - 20);
+    pointerCtx.lineTo(centerX + 20, centerY - radius + 5);
+    pointerCtx.lineTo(centerX - 20, centerY - radius + 5);
+    pointerCtx.closePath();
+    pointerCtx.fill();
 }
 
-function addItem(label) {
+/*function addItem(label) {
     const color = '#' + Math.floor(Math.random()*16777215).toString(16); // Generates a random color
     const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16); // Generates a random outline color
     items.push({ label, color, outlineColor });
     drawWheel();
     drawPointer(); // Ensure the pointer is redrawn over the updated wheel
+}*/
+
+function addItem() {
+    const newItemValue = document.getElementById('newItem').value.trim();
+    if (newItemValue) {
+        const color = '#' + Math.floor(Math.random()*16777215).toString(16);
+        items.push({ label: newItemValue, color: color });
+        drawWheel();
+        document.getElementById('newItem').value = ''; // Reset input field
+    }
 }
 
 function removeItem(label) {
@@ -84,12 +98,12 @@ function spinWheel() {
         }
         let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
         currentRotation += (spinAngle * Math.PI / 180);
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(currentRotation);
-        ctx.translate(-centerX, -centerY);
+        wheelCtx.save();
+        wheelCtx.translate(centerX, centerY);
+        wheelCtx.rotate(currentRotation);
+        wheelCtx.translate(-centerX, -centerY);
         drawWheel();
-        ctx.restore();
+        wheelCtx.restore();
         animationRequestId = requestAnimationFrame(rotateWheel);
     }
 
