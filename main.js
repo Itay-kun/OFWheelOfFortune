@@ -19,7 +19,7 @@ class luckyWheel {
         this.currentRotation = 0;
     }
 
-    addItem(label,  color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
+    addItem(label,  color= '#' + Math.floor(Math.random()*16777215).toString(16), outlineColor='#000') {
         const item = new LuckyWheelItem(label, color, outlineColor);
         this.items.push(item);
         this.drawWheel();
