@@ -1,8 +1,8 @@
 class WheelItem {
-    constructor(label, color, outlineColor) {
+    constructor(label, color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
         this.label = label;
-        this.color = color || '#' + Math.floor(Math.random()*16777215).toString(16); // Default or random color
-        this.outlineColor = outlineColor || '#000'; // Default outline color
+        this.color = color //|| '#' + Math.floor(Math.random()*16777215).toString(16); // Default or random color
+        this.outlineColor = outlineColor //|| '#000'; // Default outline color
     }
 }
 
@@ -19,7 +19,7 @@ class Wheel {
         this.currentRotation = 0;
     }
 
-    addItem(label, color, outlineColor) {
+    addItem(label,  color= '#' + Math.floor(Math.random()*16777215).toString(16);, outlineColor='#000') {
         const item = new WheelItem(label, color, outlineColor);
         this.items.push(item);
         this.drawWheel();
