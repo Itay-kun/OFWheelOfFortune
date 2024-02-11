@@ -1,7 +1,7 @@
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+const wheel_canvas = document.getElementById('wheelCanvas');
+const wheelCtx = wheel_canvas.getContext('2d');
+const centerX = wheel_canvas.width / 2;
+const centerY = wheel_canvas.height / 2;
 const radius = Math.min(centerX, centerY) * 0.9;
 let items = [
   { label: 'Item 1', color: '#B8D430', outlineColor: '#708238' },
@@ -11,7 +11,7 @@ let items = [
 let currentRotation = 0;
 
 function drawWheel() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas first
+    wheelCtx.clearRect(0, 0, wheel_canvas.width, wheel_canvas.height); // Clear the canvas first
 
     let totalItems = items.length;
     let anglePerItem = Math.PI * 2 / totalItems;
