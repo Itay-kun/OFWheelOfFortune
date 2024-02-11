@@ -3,70 +3,94 @@ const ctx = canvas.getContext('2d');
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const radius = Math.min(centerX, centerY) * 0.9;
-let items = [];
-let currentRotation = 0;
+let items = ['Item 1', 'Item 2', 'Item 3', 'Item 4']; // Starting items
+let animationRequestId;
 
 function drawWheel() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-  const sliceAngle = (2 * Math.PI) / items.length;
+    let totalItems = items.length;
+    let anglePerItem = Math.PI * 2 / totalItems;
 
-  items.forEach((item, index) => {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw each segment
+    items.forEach((item, index) => {
+        let angle = anglePerItem * index;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, angle, angle + anglePerItem);
+        ctx.lineTo(centerX, centerY);
+        ctx.fillStyle = index % 2 === 0 ? '#B8D430' : '#3AB745';
+        ctx.fill();
+
+        // Draw text
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + anglePerItem / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText(item, radius - 10, 10);
+        ctx.restore();
+    });
+
+    // Draw the pointer
+    ctx.fillStyle = 'red';
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, radius, sliceAngle * index, sliceAngle * (index + 1));
-    ctx.closePath();
-    ctx.fillStyle = index % 2 === 0 ? '#fdd700' : '#f88';
+    ctx.moveTo(centerX, centerY - radius - 20);
+    ctx.lineTo(centerX + 20, centerY - radius + 5);
+    ctx.lineTo(centerX - 20, centerY - radius + 5);
     ctx.fill();
-    ctx.stroke();
-
-    // Add text
-    ctx.save();
-    ctx.translate(centerX, centerY);
-    ctx.rotate(sliceAngle * index + sliceAngle / 2);
-    ctx.textAlign = "right";
-    ctx.fillStyle = "#000";
-    ctx.font = "16px Arial";
-    ctx.fillText(item, radius - 10, 0);
-    ctx.restore();
-  });
 }
 
 function addItem() {
-  const newItem = document.getElementById('newItem').value;
-  if (newItem) {
-    items.push(newItem);
-    drawWheel();
-    document.getElementById('newItem').value = ''; // Clear input field
-  }
+    const newItem = document.getElementById('newItem').value.trim();
+    if (newItem) {
+        items.push(newItem);
+        drawWheel();
+        document.getElementById('newItem').value = ''; // Clear the input field
+    }
 }
 
 function spinWheel() {
-  const spinTo = Math.floor(1024 + Math.random() * 1024);
-  const duration = 4000; // Duration in ms
-  const start = Date.now();
+    let spinAngleStart = Math.random() * 10 + 10;
+    let spinTime = 0;
+    let spinTimeTotal = Math.random() * 3 + 4 * 1000; // Random spin time between 4-7 seconds
 
-  function rotate() {
-    const now = Date.now();
-    const elapsed = now - start;
-    if (elapsed < duration) {
-      const easeInOut = elapsed / duration;
-      currentRotation += (spinTo / duration) * easeInOut;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.translate(centerX, centerY);
-      ctx.rotate(currentRotation * Math.PI / 180);
-      ctx.translate(-centerX, -centerY);
-      drawWheel();
-      ctx.restore();
-      requestAnimationFrame(rotate);
-    } else {
-      // Spin complete
-      const winningIndex = items.length - Math.floor((currentRotation % 360) / (360 / items.length));
-      document.getElementById('result').textContent = "Result: " + items[winningIndex];
+    function rotateWheel() {
+        spinTime += 30;
+        if (spinTime >= spinTimeTotal) {
+            stopRotateWheel();
+            return;
+        }
+        let spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+        currentRotation += (spinAngle * Math.PI / 180);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(currentRotation);
+        ctx.translate(-centerX, -centerY);
+        drawWheel();
+        ctx.restore();
+        animationRequestId = requestAnimationFrame(rotateWheel);
     }
-  }
 
-  rotate();
+    function stopRotateWheel() {
+        cancelAnimationFrame(animationRequestId);
+        let degrees = currentRotation * 180 / Math.PI + 90;
+        let arcd = 360 / items.length;
+        let index = Math.floor((360 - degrees % 360) / arcd);
+        document.getElementById('result').innerHTML = "Result: " + items[index];
+    }
+
+    function easeOut(t, b, c, d) {
+        const ts = (t /= d) * t;
+        const tc = ts * t;
+        return b + c * (tc + -3 * ts + 3 * t);
+    }
+
+    rotateWheel();
 }
 
 drawWheel(); // Initial draw
