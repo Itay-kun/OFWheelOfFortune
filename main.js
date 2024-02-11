@@ -118,15 +118,9 @@ const wheel_canvas = document.getElementById('wheelCanvas');
 const pointerCanvas = document.getElementById('pointerCanvas');
 const wheel = new Wheel(wheel_canvas, pointerCanvas);
 
-document.getElementById('addItem').addEventListener('click', function() {
-    const newItemValue = document.getElementById('newItem').value.trim();
-    if (newItemValue) {
-        const color = '#' + Math.floor(Math.random()*16777215).toString(16);
-        const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16);
-        wheel.addItem(newItemValue, color, outlineColor);
-        document.getElementById('newItem').value = ''; // Reset input field here
-    }
-});
+drawWheel();
+drawPointer(); // Initial draw of the pointer
+
 
 document.getElementById('spinButton').addEventListener('click', function() {
     wheel.spinWheel();
@@ -141,11 +135,3 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         document.getElementById('newItem').value = ''; // Reset input field here
     }
 });
-
-document.getElementById('spinButton').addEventListener('click', function() {
-    wheel.spinWheel();
-});
-
-
-drawWheel();
-drawPointer(); // Initial draw of the pointer
