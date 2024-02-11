@@ -31,7 +31,9 @@ let items = [
 let currentRotation = 0;
 
 class Wheel {
+    var wheels = documents.getElementsByClassName("wheel") //ToDo: make a function to get wheels
     constructor(canvas, pointerCanvas) {
+        this.class = "wheel"
         this.items = [];
         this.canvas = canvas;
         this.pointerCanvas = pointerCanvas;
@@ -110,8 +112,6 @@ function addItem(label) {
     const color = '#' + Math.floor(Math.random()*16777215).toString(16);
     const outlineColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     items.push(new WheelItem(label, color, outlineColor));
-    drawWheel();
-    drawPointer(); // Make sure to redraw the pointer as well
     document.getElementById('newItem').value = ''; // Reset input field here
 }
 
