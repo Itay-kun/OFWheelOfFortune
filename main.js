@@ -87,7 +87,7 @@ class Wheel {
         this.wheelCtx.fillText(item.label, radius - 10, 10);
         this.wheelCtx.restore();
     });
-  drawPointer();
+  this.drawPointer(); //ToDo: Add WheelPointer class to be able to draw multiple pointers
     }
 
     drawPointer() {
